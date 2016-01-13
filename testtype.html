@@ -1,0 +1,63 @@
+<html>
+<head>
+<meta charset="utf-8">
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+var text="bonjour";
+var delay=50;
+var currentChar=1;
+var destination="[not defined]";
+
+function fini() {
+  currentChar=1000;
+}
+
+function type()
+{
+  if (document.getElementById)
+  {
+    var dest=document.getElementById(destination);
+    if (dest)// && dest.innerHTML)
+    {
+      dest.innerHTML=text.substr(0, currentChar);
+      //dest.innerHTML+=text[currentChar-1];
+      currentChar++
+      if (currentChar>text.length)
+      {
+        currentChar=1;
+        setTimeout("type()", 90000000);
+      }
+      else
+      {
+        setTimeout("type()", delay);
+      }
+    }
+  }
+}
+
+function startTyping(textParam, destinationParam)
+{
+  text=textParam;
+  currentChar=1;
+  destination=destinationParam;
+  type();
+}
+
+
+//-->
+</SCRIPT>
+<title>JavaScript Typing Effect</title>
+</head>
+<body onclick="fini()">
+
+<DIV ID="bj"></DIV>
+
+</body>
+
+<SCRIPT LANGUAGE="JavaScript">
+<!--
+startTyping("<h4><i>Errance binaire,</i><br> par Cassandre Pépin.</h4><br><br>Préface<br><br>La nuit était tombée ... et c&#39;était une nuit comme les autres. Oui ... tout à fait banale. La lune était banale. Les épais nuages qui arrivaient étaient banales. Une vie plate, une nuit creuse ... une vie creuse, une nuit plate. Un ordinaire épatant de médiocrité.<br>Pourtant cette nuit vous avez changé.<br>Voici votre histoire, en une préface et seize chapitres.", "bj");
+
+//-->
+</script>
+</html>

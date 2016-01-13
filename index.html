@@ -1,0 +1,417 @@
+<html>
+<head>
+<title>Errance binaire</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width">
+<link rel="stylesheet" type="text/css" href="style.css">
+<link href='http://fonts.googleapis.com/css?family=Droid+Sans:400,700' rel='stylesheet' type='text/css'>
+<link href='https://fonts.googleapis.com/css?family=Abel' rel='stylesheet' type='text/css'>
+
+<div id="sound_container">
+	<audio id="sound1" src="snd/atmo.mp3" type="audio/mp3"  autoplay loop>
+	</audio>
+</div>
+
+<!--<script type="text/javascript" >
+	//définir le volume initial
+	var audio = document.querySelector('audio');
+	audio.volume=1;
+	console.log(audio.volume);
+
+	var text="bonjour";
+	var delay=50;
+	var currentChar=1;
+	var destination="[not defined]";
+
+	function fini() {
+  currentChar=1000;
+}
+function noop() {};
+
+function type()
+{
+  if (document.getElementById)
+  {
+    var dest=document.getElementById(destination);
+    if (dest)// && dest.innerHTML)
+    {
+      dest.innerHTML=text.substr(0, currentChar);
+      //dest.innerHTML+=text[currentChar-1];
+      currentChar++
+      if (currentChar>text.length)
+      {
+        currentChar=1;
+        setTimeout("type()", 90000000);
+      }
+      else
+      {
+        setTimeout("type()", delay);
+      }
+    }
+  }
+}
+
+function startTyping(textParam, destinationParam)
+{
+	startTyping = noop;
+  text=textParam;
+  currentChar=1;
+  delay=50;
+  destination=destinationParam;
+  type();
+}
+
+</script>-->
+
+</head>
+
+
+<body onload="orthographe()" onclick="fini();">
+<div id="jour">Le jour. D'épaisses ronces bloquent l'entrée de la forêt... </br>
+</div>
+
+<input type="button" id="screen" value="plein écran" onclick="toggleFullScreen()">
+
+<!--<div id="data">
+<h3>
+<span id="death">DEATH = &nbsp<span id="dead">0&nbsp</span></span>
+		// <a href="index.html" id="new">START NEW GAME&nbsp</a>
+
+<button id="new" onclick="window.location='index.html'">START NEW GAME&nbsp</button>
+<span id="temps" onclick="chrono(); this.onclick=null;">I AM A WARRIOR&nbsp</span>
+<span id="record">LAST SCORE = &nbsp<span id="rec">&nbsp</span></span></h3>
+<button id="funky" data-text-swap="NOT FUNKY">FUNKY</button>-->
+
+		<!-- <audio id="sound2" src="snd/dead.mp3" type="audio/mp3"></audio>
+
+</div>
+ -->
+
+
+
+<div id="contenu">
+	<h1 class="titre" onclick='bon()'> <span onmouseover='soustitres()'>Errance binaire</span></h1>
+	<h3 class="avant" id="soustitre"><span id="reco">0</span>&nbspmort<span id="s">&nbsp</span></h3>
+
+</div>
+
+</body>
+
+
+
+
+<script type="text/javascript">
+
+
+	var hours = new Date().getHours();
+
+	var index = 0;
+	var dead = 0;
+	var timer ;
+	var click = false;
+	var last = 0;
+	var record = sessionStorage.getItem ("last");
+	document.getElementById("reco").innerHTML = record;
+
+	// (function(){
+	// 	console.log(hours);
+	// })();
+
+/*
+}
+*/
+//////////////////////////  NIGHT STYLE
+
+/* un mode nuit et un mode jour */
+
+	if (hours > 23 || hours < 5){
+	document.body.className = "night";
+	//document.getElementById("new").className = "night";
+	// document.getElementById("funky").className = "day";
+	/*document.getElementById("screen").className = "night";*/
+	document.getElementById("jour").style.display = "none";
+
+	}
+	else {
+	document.body.className = "day";
+	//document.getElementById("new").className = "day";
+	// document.getElementById("funky").className = "night";
+	/*document.getElementById("screen").className = "day";*/
+
+	document.getElementById("jour").style.display = "block";
+
+	/*alert(hours);*/
+	}
+
+
+
+
+///////////////////////////  REMPLACER HTML
+
+	// GET HTTP
+function getHTTPObject() {
+	var xmlhttp;
+	xmlhttp = false;
+    // branch for native XMLHttpRequest object
+    if(window.XMLHttpRequest && !(window.ActiveXObject)) {
+    	try {
+			xmlhttp = new XMLHttpRequest();
+        } catch(e) {
+			xmlhttp = false;
+        }
+		// branch for IE/Windows ActiveX version
+    } else if(window.ActiveXObject) {
+       //	try {
+        //	xmlhttp = new ActiveXObject("Msxml2.XMLHTTP");
+      	//} catch(e) {
+        	try {
+          		xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        	} catch(e) {
+				alert ("Ajax not supported");
+          		xmlhttp = false;
+        	}
+		//}
+    }
+	return xmlhttp;
+}
+
+		function browse(where) {
+
+		var contenu = document.getElementById("contenu");
+
+		xmlHttp = getHTTPObject();
+		xmlHttp.open("GET",where, true);
+		xmlHttp.setRequestHeader("Accept","text/xml,application/xml,application/xhtml+xml,text/html;q=0.9,text/plain;q=0.8,image/png,*/*;q=0.5"); // IE Header Hack
+		xmlHttp.setRequestHeader("If-Modified-Since", "Sat, 1 Jan 2000 00:00:00 GMT"); // IE Cache Hack
+		xmlHttp.setRequestHeader("Cache-Control", "no-cache"); // idem
+    	xmlHttp.send(null);
+		//alert(xmlHttp==true);
+		xmlHttp.onreadystatechange=function()
+		{
+			if(xmlHttp.readyState == 4)
+			{
+				contenu.innerHTML = xmlHttp.responseText;
+        	} else {
+				//alert (xmlHttp.readyState);
+			}
+		}
+	}
+
+
+///////////////////////////  AUDIO
+
+/* j'ai pris la musique d'ambiance sur youtube c'est provisoire
+	https://www.youtube.com/watch?v=XpFxUdLA718
+*/
+
+// var button = document.querySelectorAll("button")[0];
+
+/*var button = document.getElementById('funky');
+
+button.addEventListener('click', function() {
+  if (button.getAttribute("data-text-swap") == button.innerHTML) {
+    button.innerHTML = button.getAttribute("data-text-original");
+    document.getElementById('sound').pause();
+  } else {
+    button.setAttribute("data-text-original", button.innerHTML);
+    button.innerHTML = button.getAttribute("data-text-swap");
+    document.getElementById('sound').play();
+    	/*if (click == true) {
+    		document.getElementById('sound2').play();
+    	};
+  }
+}, false);*/
+
+
+/////////////////////////////  NBR DEATH
+
+/* compter le nombre de mort et établir un 'last score' */
+
+	function bon() {
+
+		browse(index+".html")
+
+		index = index + 1;
+		click = true;
+		console.log("index=" + index);
+		/*console.log("dead="+ dead);*/
+		audio.volume=1;
+	}
+
+	function mauvais(comment) {
+
+		browse("dead"+comment+".html");
+
+		deadinc();
+		index = 0;
+		audio.volume=0;
+
+		console.log(comment+typeof(comment));
+		/*console.log("index=" + index);
+		console.log("dead="+ dead);*/
+		click = false;
+	}
+
+	function deadinc() {
+		dead = dead+1;
+		// document.getElementById("dead").innerHTML = dead;
+		var record = sessionStorage.getItem ("last");
+			rec();
+
+
+	}
+function orthographe() {
+	if (record>1) {
+	document.getElementById("s").innerHTML = "s";}
+	if (record == null) {
+		document.getElementById("reco").innerHTML = "0";
+	}
+	}
+
+
+
+/////////////////////////  CHRONO
+
+function chrono()
+{
+
+	var count=10;
+	var warrior = null;
+	var counter=setInterval(timer, 1000); //1000 will  run it every 1 second
+
+
+	function timer()
+	{
+  		count=count-1;
+  		if (count < 0)
+  		{
+  	 		document.getElementById("temps").innerHTML= "YOU ARE DEAD ! &nbsp</br> <span style='font-size:20px'> I GUESS YOU ARE NOT A WARRIOR ... </span></br> <span style='font-size:15px;'> (but maybe you'll be a warrior on next game ?) </span> "; // watch for spelling
+
+     		clearInterval(counter);
+     		//counter ended, do something here
+
+
+			browse("dead0.html")
+
+			deadinc();
+			index = 0;
+			count=10;
+
+     		return;
+		}
+		if (click==true) {
+			count=10;
+			click=false;
+			return;
+		}
+
+		if  (index==16) {
+			warrior == true;
+			document.getElementById("temps").innerHTML= "YOU ARE A TRUE WARRIOR !"; // watch for spelling
+
+     		clearInterval(counter);
+     		return;
+		};
+
+ 	document.getElementById("temps").innerHTML= "<span style='font-size:15px;'>take the right decision in less than&nbsp</span>" + count + "<span style='font-size:15px;'>&nbspseconds</span>"; // watch for spelling
+	}
+}
+
+
+
+
+
+function rec() {
+	sessionStorage.setItem ("last", dead ) ;
+	/*record = Math.max("last")*/
+
+/*	document.getElementById("reco").innerHTML = record;*/
+}
+
+
+
+/////////////////////////////  FULLSCREEN
+
+
+
+function toggleFullScreen() {
+  if ((document.fullScreenElement && document.fullScreenElement !== null) ||
+   (!document.mozFullScreen && !document.webkitIsFullScreen)) {
+    if (document.documentElement.requestFullScreen) {
+      document.documentElement.requestFullScreen();
+      document.getElementById('screen').style.display='none';
+    } else if (document.documentElement.mozRequestFullScreen) {
+      document.documentElement.mozRequestFullScreen();
+      document.getElementById('screen').style.display='none';
+    } else if (document.documentElement.webkitRequestFullScreen) {
+      document.documentElement.webkitRequestFullScreen(Element.ALLOW_KEYBOARD_INPUT);
+      document.getElementById('screen').style.display='none';
+    }
+  } else {
+    if (document.cancelFullScreen) {
+      document.cancelFullScreen();
+      document.getElementById('screen').style.display='block';
+    } else if (document.mozCancelFullScreen) {
+      document.mozCancelFullScreen();
+      document.getElementById('screen').style.display='block';
+    } else if (document.webkitCancelFullScreen) {
+      document.webkitCancelFullScreen();
+      document.getElementById('screen').style.display='block';
+    }
+  }
+}
+
+
+
+////////////////////////////  DETECT BROWSER
+
+
+// var isOpera = !!window.opera || navigator.userAgent.indexOf(' OPR/') >= 0;
+//     // Opera 8.0+ (UA detection to detect Blink/v8-powered Opera)
+// var isFirefox = typeof InstallTrigger !== 'undefined';   // Firefox 1.0+
+// var isSafari = Object.prototype.toString.call(window.HTMLElement).indexOf('Constructor') > 0;
+//     // At least Safari 3+: "[object HTMLElementConstructor]"
+// var isChrome = !!window.chrome && !isOpera;              // Chrome 1+
+// var isIE = /*@cc_on!@*/false || !!document.documentMode;   // At least IE6
+
+// if ( isFirefox == false ) {
+// 	alert('sorry but this website needs firefox for now ! please use firefox !');
+// }
+// else {
+// 	alert('thank you for using firefox ! have a nice walk !')
+// }
+
+function soustitres() {
+	document.getElementById("soustitre").className = "apres";
+}
+
+function changeMusic(){
+	var before = document.getElementById('sound1');
+	before.muted = true;
+	var after = "<audio id='sound2' src='snd/fini.mp3' type='audio/mp3' autoplay></audio>";
+	var target = document.getElementById('sound_container');
+	target.innerHTML = after;
+}
+
+function retirer() {
+    var elem = 'cred';
+ /*document.getElementById('citation-'+ i);*/
+    document.getElementById(elem).style.display="none";
+    document.getElementById('credit').style.display="block";
+}
+
+
+
+
+
+
+
+///////////////////////////////////////////////
+
+//type effect
+
+
+
+	</script>
+
+</html>
